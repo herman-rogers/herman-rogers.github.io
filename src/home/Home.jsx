@@ -12,7 +12,7 @@ const Home = () => (
       <Link to="/notebook">notebook</Link>
     </div>
     <div className="app-link">
-      <a href="https://github.com" target="_">github</a>
+      <a href="https://github.com/herman-rogers" target="_">github</a>
     </div>
     <div className="app-link">
       <a href="https://www.linkedin.com/in/herman-rogers-76513a32" target="_">linkedin</a>

@@ -8,16 +8,23 @@
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.0",
-    "superagent": "^3.8.2"
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start:dev": "webpack-dev-server --config webpack.config.dev.js",
+    "build:dev": "webpack --config webpack.config.dev.js",
+    "build:prod": "webpack --config webpack.config.prod.js"
   },
   "devDependencies": {
-    "eslint": "^4.17.0"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.9",
+    "eslint": "^4.17.0",
+    "style-loader": "^0.20.1"
   }
 }
