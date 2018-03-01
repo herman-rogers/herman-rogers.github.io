@@ -18,38 +18,49 @@ export default class Notebook extends Component {
   }
 
   componentDidMount() {
-    octokit.gitdata.getTree({
-      owner: 'herman-rogers',
-      repo: 'SoftwareLabNotebook',
-      sha: '6a44b1b68aa15cfdd25225d70ff755fb14d2109f',
-      recursive: true,
-    }).then((response) => {
-      const notebook = response.data.tree;
-      const listOfNotes = [];
+    const owner = 'herman-rogers';
+    const repo = 'SoftwareLabNotebook';
 
-      notebook.forEach((note) => {
-        const isNotebook = note.path.indexOf('notebook') !== -1;
-        const isNote = note.path.indexOf('.md') !== -1;
+    octokit.repos.getBranch({
+      owner,
+      repo,
+      branch: 'master',
+    }).then((branch) => {
+      const { commit } = branch.data;
 
-        if (isNotebook && isNote) {
-          const splitPath = note.path.split('/');
-          const date = splitPath[splitPath.length - 1].replace('.md', '');
-          const splitDate = date.split('-');
-          const isoDate = `${splitDate[3]}-${splitDate[1]}-${splitDate[2]}T00:00:00Z`;
+      octokit.gitdata.getTree({
+        owner,
+        repo,
+        sha: commit.sha,
+        recursive: true,
+      }).then((response) => {
+        const notebook = response.data.tree;
+        const listOfNotes = [];
 
-          const formattedNote = Object.assign({}, note, {
-            date: new Date(isoDate),
-          });
+        notebook.forEach((note) => {
+          const isNotebook = note.path.indexOf('notebook') !== -1;
+          const isNote = note.path.indexOf('.md') !== -1;
 
-          listOfNotes.push(formattedNote);
-        }
-      });
+          if (isNotebook && isNote) {
+            const splitPath = note.path.split('/');
+            const date = splitPath[splitPath.length - 1].replace('.md', '');
+            const splitDate = date.split('-');
+            const isoDate = `${splitDate[3]}-${splitDate[1]}-${splitDate[2]}T00:00:00Z`;
 
-      listOfNotes.sort((a, b) => b.date - a.date);
+            const formattedNote = Object.assign({}, note, {
+              date: new Date(isoDate),
+            });
 
-      this.setState({
-        loading: false,
-        notes: listOfNotes,
+            listOfNotes.push(formattedNote);
+          }
+        });
+
+        listOfNotes.sort((a, b) => b.date - a.date);
+
+        this.setState({
+          loading: false,
+          notes: listOfNotes,
+        });
       });
     });
   }
